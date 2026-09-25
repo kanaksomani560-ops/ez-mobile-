@@ -26,7 +26,7 @@
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
   .version{margin-left:auto;font-size:10px;color:var(--muted);letter-spacing:2px;}
 
-  .layout{display:grid;grid-template-columns:300px 1fr 360px;grid-gap:18px;flex:1;height:calc(100vh - 61px);overflow:hidden;padding:16px 20px;}
+  .layout{display:flex;flex-direction:column;flex:1;height:calc(100vh - 61px);overflow:hidden;padding:12px 16px;}
 
   .panel{border-right:1px solid rgba(255,255,255,0.06);display:flex;flex-direction:column;overflow-y:auto;background:rgba(10,10,10,0.35);border-radius:24px;}
   .section{padding:18px 22px;border:1px solid rgba(255,255,255,0.08);background:rgba(12,12,12,0.85);border-radius:20px;box-shadow:0 20px 50px rgba(0,0,0,0.18);margin-bottom:14px;}
@@ -150,31 +150,33 @@
   <!-- MIDDLE: CHAT IFRAME + SEND -->
   <div id="chatPanel" class="chat-panel">
 
-    <div class="chat-header">
-      <div>
+    <div class="chat-header" style="flex-wrap:wrap;gap:10px;padding:14px 16px;">
+      <div style="display:flex;flex-direction:column;gap:4px;">
         <div class="chat-title">LIVE CHAT</div>
         <div class="chat-subtitle" id="channelStatus">not connected</div>
       </div>
-      <div class="chat-as">Sending as: <span class="name" id="selectedName">none</span></div>
+      <div class="chat-as" style="margin-left:auto;">Sending as: <span class="name" id="selectedName">none</span></div>
       <button class="btn btn-dark" id="streamToggleBtn" onclick="toggleStream()" style="display:none;">SHOW STREAM</button>
     </div>
 
-    <!-- CHANNEL CONNECT BAR -->
-    <div style="padding:10px 16px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;gap:8px;align-items:center;background:rgba(15,15,15,0.9);">
-      <span style="font-size:11px;color:var(--muted);white-space:nowrap;">Channel:</span>
-      <input type="text" id="channelInput" placeholder="Enter channel name..." onkeydown="if(event.key==='Enter')connectChannel()" style="flex:1;padding:8px 12px;border-radius:12px;border:1px solid rgba(255,255,255,0.12);background:rgba(20,20,20,0.95);color:#eee;font-family:var(--mono);font-size:12px;outline:none;"/>
-      <button class="btn btn-green" onclick="connectChannel()" style="padding:8px 20px;white-space:nowrap;">GO</button>
-    </div>
-
-    <div style="padding:10px 16px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;gap:8px;align-items:flex-start;background:rgba(10,10,10,0.6);">
-      <textarea id="tokensArea" placeholder="Paste tokens, one per line..." style="flex:1;min-height:60px;max-height:100px;padding:8px 12px;border-radius:12px;border:1px solid rgba(255,255,255,0.12);background:rgba(20,20,20,0.95);color:#eee;font-family:var(--mono);font-size:11px;resize:vertical;outline:none;" oninput="updateTokenCount()"></textarea>
-      <div style="display:flex;flex-direction:column;gap:6px;">
-        <button class="btn btn-dark" onclick="loadTokensFile()" style="white-space:nowrap;font-size:10px;padding:8px 12px;">LOAD FILE</button>
-        <button class="btn btn-green" onclick="validateTokens()" style="white-space:nowrap;font-size:10px;padding:8px 12px;">VALIDATE</button>
+    <!-- CHANNEL + TOKENS BAR -->
+    <div style="padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(12,12,12,0.9);display:flex;flex-direction:column;gap:10px;">
+      <!-- Channel Row -->
+      <div style="display:flex;gap:8px;align-items:center;">
+        <span style="font-size:11px;color:var(--muted);white-space:nowrap;min-width:60px;">Channel:</span>
+        <input type="text" id="channelInput" placeholder="Enter channel name..." onkeydown="if(event.key==='Enter')connectChannel()" style="flex:1;padding:8px 12px;border-radius:12px;border:1px solid rgba(255,255,255,0.12);background:rgba(20,20,20,0.95);color:#eee;font-family:var(--mono);font-size:12px;outline:none;"/>
+        <button class="btn btn-green" onclick="connectChannel()" style="padding:8px 16px;font-size:11px;min-height:36px;">GO</button>
       </div>
-      <div style="display:flex;flex-direction:column;justify-content:center;gap:4px;">
-        <div class="sline" id="tokenCount" style="white-space:nowrap;font-size:10px;">no tokens</div>
-        <div class="sline" id="proxyCount" style="white-space:nowrap;font-size:10px;color:var(--accent);">0 proxies</div>
+      <!-- Tokens Row -->
+      <div style="display:flex;gap:8px;align-items:flex-start;">
+        <span style="font-size:11px;color:var(--muted);white-space:nowrap;min-width:60px;padding-top:10px;">Tokens:</span>
+        <textarea id="tokensArea" placeholder="Paste tokens, one per line..." style="flex:1;min-height:60px;max-height:90px;padding:8px 12px;border-radius:12px;border:1px solid rgba(255,255,255,0.12);background:rgba(20,20,20,0.95);color:#eee;font-family:var(--mono);font-size:11px;resize:vertical;outline:none;" oninput="updateTokenCount()"></textarea>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <button class="btn btn-dark" onclick="loadTokensFile()" style="font-size:10px;padding:7px 10px;min-height:32px;">LOAD</button>
+          <button class="btn btn-green" onclick="validateTokens()" style="font-size:10px;padding:7px 10px;min-height:32px;">VALIDATE</button>
+          <div style="font-size:9px;color:var(--muted);text-align:center;" id="tokenCount">0</div>
+          <div style="display:none;" id="proxyCount"></div>
+        </div>
       </div>
     </div>
 
